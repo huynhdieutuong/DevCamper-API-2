@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const colors = require('colors');
 const morgan = require('morgan');
+const errorHandler = require('./middlewares/error');
 
 const connectDB = require('./config/db');
 
@@ -16,6 +17,9 @@ if (process.env.NODE_ENV === 'development') {
 
 // Routes
 app.get('/', (req, res) => res.send('ok'));
+
+// Error Handler
+app.use(errorHandler);
 
 // Port
 const port = process.env.PORT || 5000;
