@@ -7,6 +7,9 @@ const errorHandler = require('./middlewares/error');
 
 const connectDB = require('./config/db');
 
+// Routes
+const bootcamps = require('./routes/bootcamps');
+
 // Connect Database
 connectDB();
 
@@ -15,8 +18,11 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Routes
-app.get('/', (req, res) => res.send('ok'));
+// Body parser middleware
+app.use(express.json());
+
+// Moute Routes
+app.use('/api/v2/bootcamps', bootcamps);
 
 // Error Handler
 app.use(errorHandler);
