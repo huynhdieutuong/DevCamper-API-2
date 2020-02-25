@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Bootcamp = require('../models/Bootcamp');
-
+const coursesRoute = require('./courses');
 const advancedResults = require('../middlewares/advancedResults');
 
 const {
@@ -26,5 +26,7 @@ router
   .delete(deleteBootcamp);
 
 router.get('/radius/:zipcode/:distance', getBootcampsInRadius);
+
+router.use('/:bootcampId/courses', coursesRoute);
 
 module.exports = router;

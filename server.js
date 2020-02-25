@@ -9,6 +9,7 @@ const connectDB = require('./config/db');
 
 // Routes
 const bootcamps = require('./routes/bootcamps');
+const courses = require('./routes/courses');
 
 // Connect Database
 connectDB();
@@ -23,6 +24,7 @@ app.use(express.json());
 
 // Moute Routes
 app.use('/api/v2/bootcamps', bootcamps);
+app.use('/api/v2/courses', courses);
 
 // Error Handler
 app.use(errorHandler);
