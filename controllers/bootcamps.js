@@ -89,7 +89,7 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
 
   ifNotResource(bootcamp, req.params.id, next);
 
-  await Bootcamp.findByIdAndDelete(req.params.id);
+  await bootcamp.remove();
 
   res.status(200).json({
     success: true,
