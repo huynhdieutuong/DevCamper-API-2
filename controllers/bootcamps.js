@@ -52,7 +52,7 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v2/bootcamps/:id
 // @access  Public
 exports.getBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await Bootcamp.findById(req.params.id);
+  const bootcamp = await Bootcamp.findById(req.params.id).populate('courses');
 
   ifNotResource(bootcamp, req.params.id, next);
 

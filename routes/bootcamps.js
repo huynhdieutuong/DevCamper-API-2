@@ -16,7 +16,7 @@ const {
 
 router
   .route('/')
-  .get(advancedResults(Bootcamp), getBootcamps)
+  .get(advancedResults(Bootcamp, 'courses'), getBootcamps)
   .post(createBootcamp);
 
 router
