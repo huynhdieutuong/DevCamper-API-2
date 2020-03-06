@@ -96,3 +96,15 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
     data: {}
   });
 });
+
+// @desc    Upload photo for bootcamp
+// @route   PUT /api/v2/bootcamps/:id/photo
+// @access  Private
+exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
+  await Bootcamp.findByIdAndUpdate(req.params.id, { photo: res.fileName });
+
+  res.status(200).json({
+    success: true,
+    data: res.fileName
+  });
+});

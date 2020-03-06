@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const colors = require('colors');
 const morgan = require('morgan');
+const path = require('path');
+const fileUpload = require('express-fileupload');
 const errorHandler = require('./middlewares/error');
 
 const connectDB = require('./config/db');
@@ -21,6 +23,12 @@ if (process.env.NODE_ENV === 'development') {
 
 // Body parser middleware
 app.use(express.json());
+
+// File upload middleware
+app.use(fileUpload());
+
+// Static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Moute Routes
 app.use('/api/v2/bootcamps', bootcamps);
