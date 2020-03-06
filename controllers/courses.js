@@ -91,7 +91,7 @@ exports.deleteCourse = asyncHandler(async (req, res, next) => {
 
   ifNotResource(course, id, next);
 
-  await Course.findByIdAndDelete(id);
+  await course.remove();
 
   res.status(200).json({
     success: true,
