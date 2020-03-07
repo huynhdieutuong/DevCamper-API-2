@@ -5,6 +5,7 @@ const colors = require('colors');
 const morgan = require('morgan');
 const path = require('path');
 const fileUpload = require('express-fileupload');
+const cookieParser = require('cookie-parser');
 const errorHandler = require('./middlewares/error');
 
 const connectDB = require('./config/db');
@@ -12,6 +13,7 @@ const connectDB = require('./config/db');
 // Routes
 const bootcamps = require('./routes/bootcamps');
 const courses = require('./routes/courses');
+const auth = require('./routes/auth');
 
 // Connect Database
 connectDB();
@@ -24,6 +26,9 @@ if (process.env.NODE_ENV === 'development') {
 // Body parser middleware
 app.use(express.json());
 
+// Cookie parser middleware
+app.use(cookieParser());
+
 // File upload middleware
 app.use(fileUpload());
 
@@ -33,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Moute Routes
 app.use('/api/v2/bootcamps', bootcamps);
 app.use('/api/v2/courses', courses);
+app.use('/api/v2/auth', auth);
 
 // Error Handler
 app.use(errorHandler);
