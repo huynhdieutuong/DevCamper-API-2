@@ -12,11 +12,13 @@ const {
   deleteCourse
 } = require('../controllers/courses');
 
+const { protect } = require('../middlewares/auth');
+
 router
   .route('/:id')
   .get(getCourse)
-  .put(updateCourse)
-  .delete(deleteCourse);
+  .put(protect, updateCourse)
+  .delete(protect, deleteCourse);
 
 router
   .route('/')
@@ -27,6 +29,6 @@ router
     }),
     getCourses
   )
-  .post(addCourse);
+  .post(protect, addCourse);
 
 module.exports = router;
