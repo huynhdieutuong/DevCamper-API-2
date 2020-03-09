@@ -16,18 +16,18 @@ const {
   bootcampPhotoUpload
 } = require('../controllers/bootcamps');
 
-const { protect } = require('../middlewares/auth');
+const { protect, authorize } = require('../middlewares/auth');
 
 router
   .route('/')
   .get(advancedResults(Bootcamp, 'courses'), getBootcamps)
-  .post(protect, createBootcamp);
+  .post(protect, authorize('publisher', 'admin'), createBootcamp);
 
 router
   .route('/:id')
   .get(getBootcamp)
-  .put(protect, updateBootcamp)
-  .delete(protect, deleteBootcamp);
+  .put(protect, authorize('publisher', 'admin'), updateBootcamp)
+  .delete(protect, authorize('publisher', 'admin'), deleteBootcamp);
 
 router.get('/radius/:zipcode/:distance', getBootcampsInRadius);
 
@@ -36,6 +36,7 @@ router.use('/:bootcampId/courses', coursesRoute);
 router.put(
   '/:id/photo',
   protect,
+  authorize('publisher', 'admin'),
   uploadFile(Bootcamp, 'image', 2),
   bootcampPhotoUpload
 );
