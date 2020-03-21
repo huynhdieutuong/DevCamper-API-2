@@ -1,6 +1,4 @@
 const asyncHandler = require('../middlewares/async');
-const ifNotResource = require('../utils/ifNotResource');
-
 const Course = require('../models/Course');
 const Bootcamp = require('../models/Bootcamp');
 
@@ -36,7 +34,9 @@ exports.getCourse = asyncHandler(async (req, res, next) => {
     select: 'name description'
   });
 
-  ifNotResource(course, id, next);
+  if (!course) {
+    return next(new ErrorResponse(`Course not found with id of ${id}`, 404));
+  }
 
   res.status(200).json({
     success: true,
@@ -51,7 +51,11 @@ exports.addCourse = asyncHandler(async (req, res, next) => {
   const { bootcampId } = req.params;
   const bootcamp = await Bootcamp.findById(bootcampId);
 
-  ifNotResource(bootcamp, bootcampId, next);
+  if (!bootcamp) {
+    return next(
+      new ErrorResponse(`Bootcamp not found with id of ${bootcampId}`, 404)
+    );
+  }
 
   // Make sure user is bootcamp user
   if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
@@ -79,7 +83,9 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   let course = await Course.findById(id).populate('bootcamp');
 
-  ifNotResource(course, id, next);
+  if (!course) {
+    return next(new ErrorResponse(`Course not found with id of ${id}`, 404));
+  }
 
   // Make sure user is bootcamp user
   if (
@@ -113,7 +119,9 @@ exports.deleteCourse = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const course = await Course.findById(id).populate('bootcamp');
 
-  ifNotResource(course, id, next);
+  if (!course) {
+    return next(new ErrorResponse(`Course not found with id of ${id}`, 404));
+  }
 
   // Make sure user is bootcamp user
   if (

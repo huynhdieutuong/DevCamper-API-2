@@ -1,6 +1,5 @@
 const asyncHandler = require('../middlewares/async');
 const Bootcamp = require('../models/Bootcamp');
-const ifNotResource = require('../utils/ifNotResource');
 const geoCoder = require('../utils/geoCoder');
 const ErrorResponse = require('../utils/errorResponse');
 
@@ -68,7 +67,11 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
 exports.getBootcamp = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.findById(req.params.id).populate('courses');
 
-  ifNotResource(bootcamp, req.params.id, next);
+  if (!bootcamp) {
+    return next(
+      new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
+    );
+  }
 
   res.status(200).json({
     success: true,
@@ -82,7 +85,11 @@ exports.getBootcamp = asyncHandler(async (req, res, next) => {
 exports.updateBootcamp = asyncHandler(async (req, res, next) => {
   let bootcamp = await Bootcamp.findById(req.params.id);
 
-  ifNotResource(bootcamp, req.params.id, next);
+  if (!bootcamp) {
+    return next(
+      new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
+    );
+  }
 
   // Make sure user is bootcamp user
   if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
@@ -112,7 +119,11 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.findById(req.params.id);
 
-  ifNotResource(bootcamp, req.params.id, next);
+  if (!bootcamp) {
+    return next(
+      new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
+    );
+  }
 
   // Make sure user is bootcamp user
   if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
@@ -138,7 +149,11 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
 exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.findById(req.params.id);
 
-  ifNotResource(bootcamp, req.params.id, next);
+  if (!bootcamp) {
+    return next(
+      new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
+    );
+  }
 
   // Make sure user is bootcamp user
   if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
