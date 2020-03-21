@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 const Schema = mongoose.Schema;
 
 const CourseSchema = new Schema({
@@ -7,6 +8,7 @@ const CourseSchema = new Schema({
     trim: true,
     required: [true, 'Please add a course title']
   },
+  slug: String,
   description: {
     type: String,
     required: [true, 'Please add a description']
@@ -37,6 +39,11 @@ const CourseSchema = new Schema({
     ref: 'Bootcamp',
     required: true
   }
+});
+
+// Create course slug from the title
+CourseSchema.pre('save', function() {
+  this.slug = slugify(this.title, { lower: true });
 });
 
 // Static method to get avg of course tuitions

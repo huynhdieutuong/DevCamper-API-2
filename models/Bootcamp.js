@@ -142,9 +142,6 @@ BootcampSchema.pre('save', async function() {
     zipcode,
     country: countryCode
   };
-
-  // Do not save address in DB
-  this.address = undefined;
 });
 
 // Reverse populate with virtuals
